@@ -1,0 +1,23 @@
+.leftWrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.wrap {
+    display: flex;
+}
+
+.time {
+    color: #fff;
+    font-size: 55px;
+    font-weight: bold;
+    font-family: 'Roboto', sans-serif;
+}
+
+.date {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 15px;
+    margin: -8px 0px 0px 0px;
+    font-family: 'Roboto', sans-serif;
+    /* text-shadow: rgba(0, 0, 0, 0.2) 0px 0px 3.5px; */
+}

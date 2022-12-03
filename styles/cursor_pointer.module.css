@@ -1,0 +1,7 @@
+.image_pointer:hover {
+    cursor: pointer !important;
+    width: 100px;
+}
+.image_pointer {
+    width: 100px !important;
+}
