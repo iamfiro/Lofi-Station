@@ -9,13 +9,28 @@ import PlayIcon from '../public/icon/play.png';
 import PauseIcon from '../public/icon/pause.png';
 import LoopSelectIcon from '../public/icon/loop_select.png';
 import LoopIcon from '../public/icon/loop.png';
+import FullScreenIcon from '../public/icon/fullscreen.png';
+import FullScreenSelectIcon from '../public/icon/fullscreen_select.png';
+import VolumeIcon from '../public/icon/volume.png'
 import styled from "styled-components";
 import '../styles/cursor_pointer.module.css';
 
+function toggleFullScreen() {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen()
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen()
+      }
+    }
+}
+
 export default function Header() {
     const [musicModalHandler, setMusicModalHandler] = useState(false)
-    const [musicData, setMusicData] = useState({id: '', playing: false, name: '', loop: false, author: '', played: 0});
+    const [musicData, setMusicData] = useState({id: '', playing: false, name: '', loop: false, author: '', played: 0, volume: 0.3});
     const [hasWindow, setHasWindow] = useState(false);
+    const [isFullscreen, setIsFullscreen] = useState(false);
+
     const playerRef = useRef();
     useEffect(() => {
         if(typeof window !== "undefined") setHasWindow(true);
@@ -30,16 +45,34 @@ export default function Header() {
                     <Image alt='ButtomIcon' src={BottomIcon} className={Styles.buttomIcon}></Image>
                 </div>
                 <div style={{display: 'flex'}}>
-                    <Image className='image_pointer' alt='playing' onClick={() => {
-                        let copyState = { ...musicData };
-                        copyState.playing = !copyState.playing;
-                        setMusicData(copyState)
-                    }} width={15} src={musicData.playing ? PauseIcon : PlayIcon} style={{marginRight: '25px'}}/>
-                    <Image className='image_pointer' alt='loop' onClick={() => {
-                        let copyState = { ...musicData };
-                        copyState.loop = !copyState.loop;
-                        setMusicData(copyState)
-                    }} width={15} src={musicData.loop ? LoopSelectIcon : LoopIcon} style={{marginRight: '25px'}}/>
+                    <Hover>
+                        <Image alt='playing' width={16} src={VolumeIcon} style={{marginRight: '10px'}}/>
+                        <Range type="range" name="volume" min="0" max="20" onChange={(e) => {
+                            let copyState = { ...musicData };
+                            copyState.volume =  e.target.value;
+                            setMusicData(copyState);
+                        }}/>
+                    </Hover>
+                    <Hover>
+                        <Image alt='playing' onClick={() => {
+                            let copyState = { ...musicData };
+                            copyState.playing = !copyState.playing;
+                            setMusicData(copyState)
+                        }} width={16} src={musicData.playing ? PauseIcon : PlayIcon} style={{marginRight: '25px'}}/>
+                    </Hover>
+                    <Hover>
+                        <Image alt='loop' onClick={() => {
+                            let copyState = { ...musicData };
+                            copyState.loop = !copyState.loop;
+                            setMusicData(copyState)
+                        }} width={16} src={musicData.loop ? LoopSelectIcon : LoopIcon} style={{marginRight: '25px'}}/>
+                    </Hover>
+                    <Hover>
+                        <Image width={16} src={ isFullscreen ? FullScreenSelectIcon : FullScreenIcon} alt='fullscreen' onClick={() => {
+                            toggleFullScreen();
+                            setIsFullscreen(!isFullscreen)
+                        }}/>
+                    </Hover>
                 </div>
             </div>
             <ProgressWrap>
@@ -54,7 +87,7 @@ export default function Header() {
                 height="0px" 
                 muted={false}
                 playing={musicData.playing}
-                volume={0.1}
+                volume={musicData.volume / 20}
                 loop={musicData.loop}
                 onEnded={() => {
                     let copyState = { ...musicData };
@@ -85,4 +118,32 @@ const Progress = styled.div`
     height: 100%;
     background-color: #fff;
     transition: all 1s;
+`
+
+const Hover = styled.div`
+    display: flex;
+    :hover {
+        cursor: pointer;
+    }
+`
+
+const Range = styled.input`
+    -webkit-appearance: none; /*기본 스타일을 사용할지 말지 정하기 */
+    width:100%;
+    height: 5px;
+    background-color: #ffffff60;
+    border-radius: 10px;
+    margin: 6px 35px 0px 0px;
+    width: 90px;
+
+    ::-webkit-slider-thumb{
+        -webkit-appearance: none; /*기본 스타일을 사용할지 말지 정하기 */
+        height: 10px;
+        width: 10px;
+        border-radius: 15px;
+        outline: 0;
+        border: 0;
+        background-color: #fff;
+        cursor: pointer;
+}
 `

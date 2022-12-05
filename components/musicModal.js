@@ -39,8 +39,10 @@ export default function MusicModal(props) {
                     <Title>Lofi Station</Title>
                 </div>
                 <div style={{display: 'flex', alignItems: 'center'}}>
-                    <SerchInput placeholder="검색어를 입력해주세요"/>
-                    <Image alt='exit' src={CloseIcon} width={17} height={17} style={{marginLeft: '15px'}}/>
+                    {/* <SerchInput placeholder="검색어를 입력해주세요"/> */}
+                    <Hover>
+                        <Image onClick={() => props.modalHandler(false)} alt='exit' src={CloseIcon} width={17} height={17} style={{marginLeft: '15px'}}/>
+                    </Hover>
                 </div>
             </Header>
             <ScrollView>
@@ -117,5 +119,11 @@ const ScrollView = styled.div`
 
    ::-webkit-scrollbar-track {
         background: #cccc;  /*스크롤바 뒷 배경 색상*/
+    }
+`
+
+const Hover = styled.div`
+    :hover {
+        cursor: pointer;
     }
 `
