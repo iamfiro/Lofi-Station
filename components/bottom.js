@@ -47,7 +47,7 @@ export default function Header() {
                 <div style={{display: 'flex'}}>
                     <Hover>
                         <Image alt='playing' width={16} src={VolumeIcon} style={{marginRight: '10px'}}/>
-                        <Range type="range" name="volume" min="0" max="20" onChange={(e) => {
+                        <Range type="range" name="volume" value="6" min="0" max="20" onChange={(e) => {
                             let copyState = { ...musicData };
                             copyState.volume =  e.target.value;
                             setMusicData(copyState);
